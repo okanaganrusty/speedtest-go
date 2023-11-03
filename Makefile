@@ -15,7 +15,7 @@ certs:
 	openssl req -x509 -newkey rsa:2048 -keyout $(KEY) -out $(CERT) -days 365 -nodes -subj $(SUBJECT)
 
 build:
-	go build
+	GOOS=linux go build
 
 run:
 	speedtest
