@@ -20,8 +20,11 @@ var (
 func main() {
 	flag.Parse()
 	conf := config.Load(*optConfig)
+
 	web.SetServerLocation(&conf)
 	results.Initialize(&conf)
+
 	database.SetDBInfo(&conf)
+
 	log.Fatal(web.ListenAndServe(&conf))
 }
