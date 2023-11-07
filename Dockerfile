@@ -10,7 +10,7 @@ RUN GOOS=linux go build -ldflags "-w -s" -trimpath -o speedtest .
 FROM debian:bullseye
 
 RUN apt update -y
-RUN apt install -y iproute2 iputils-ping curl netstat
+RUN apt install -y iproute2 iputils-ping curl net-tools
 
 WORKDIR /app
 COPY --chown=nobody --from=build_base /build/speedtest ./speedtest
