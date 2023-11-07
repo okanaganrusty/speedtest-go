@@ -1,17 +1,15 @@
 FROM golang:latest AS build_base
 
-RUN apk add --no-cache git gcc ca-certificates libc-dev
 WORKDIR /build
 COPY go.mod go.sum ./
 RUN go mod download
-
 COPY ./ ./
 RUN go build -ldflags "-w -s" -trimpath -o speedtest .
 
 FROM alpine:latest
-RUN apk add --no-cache ca-certificates
 
 WORKDIR /app
+RUN apk add --no-cache ca-certificates
 
 COPY --from=build_base /build/speedtest ./
 COPY settings.toml ./
