@@ -1,20 +1,19 @@
-FROM golang:latest AS build_base
+FROM golang:bullseye AS build_base
 
 WORKDIR /build
 COPY go.mod go.sum ./
 RUN go mod download
 COPY ./ ./
-RUN go build -ldflags "-w -s" -trimpath -o speedtest .
+RUN GOOS=linux go build -ldflags "-w -s" -trimpath -o speedtest .
 
-FROM alpine:latest
+FROM debian:bullseye
 
 WORKDIR /app
-RUN apk add --no-cache ca-certificates
-
-COPY --from=build_base /build/speedtest ./
-COPY settings.toml ./
+COPY --from=build_base /build/speedtest /app/speedtest
+COPY ./settings.toml /app/settings.toml
+COPY ./web/assets /app/assets
 
 USER nobody
 EXPOSE 8443
 
-CMD ["./speedtest"]
+CMD ["./speedtest", "-c", "./settings.toml"]
