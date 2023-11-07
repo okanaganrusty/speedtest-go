@@ -17,10 +17,13 @@ build:
 	GOOS=linux go build
 
 docker-build:
-	docker build -t localhost/library/speedtest-go:latest .
+	docker build \
+		-t speedtest \
+		-t speedtest:latest \
+		.
 
 docker-run:
-	docker run -it localhost/library/speedtest-go:latest
+	docker run -it speedtest:latest
 
 run:
 	speedtest
@@ -28,4 +31,3 @@ run:
 all: certs build run
 
 docker-all: certs docker-build docker-run
-
