@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"io"
 	"io/fs"
-	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
@@ -32,10 +31,8 @@ const (
 //go:embed assets
 var defaultAssets embed.FS
 
-var (
-	// generate random data for download test on start to minimize runtime overhead
-	randomData = getRandomData(chunkSize)
-)
+// generate random data for download test on start to minimize runtime overhead
+var randomData = getRandomData(chunkSize)
 
 func ListenAndServe(conf *config.Config) error {
 	r := chi.NewRouter()
@@ -133,7 +130,7 @@ func pages(fs http.FileSystem, BaseURL string) http.HandlerFunc {
 }
 
 func empty(w http.ResponseWriter, r *http.Request) {
-	_, err := io.Copy(ioutil.Discard, r.Body)
+	_, err := io.Copy(io.Discard, r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return

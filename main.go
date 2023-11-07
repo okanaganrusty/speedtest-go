@@ -13,13 +13,12 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var (
-	optConfig = flag.String("c", "", "config file to be used, defaults to settings.toml in the same directory")
-)
+var optConfig = flag.String("c", "", "config file to be used, defaults to settings.toml in the same directory")
 
 func main() {
 	flag.Parse()
 	conf := config.Load(*optConfig)
+	log.Debugf("Configuration loaded: %+v", conf)
 
 	web.SetServerLocation(&conf)
 	results.Initialize(&conf)
